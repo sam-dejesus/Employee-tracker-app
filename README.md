@@ -36,7 +36,7 @@ add/remove/update/view company data, departments, roles, employee info like sala
 
 when the user is done they will be allowed to close the application by clicking the 
 
-exit option. here is a link to a demo video 
+exit option. here is a link to a demo video https://drive.google.com/file/d/13otBgCQZsQJt792jjg8ezpPvd0MuazYj/view?usp=sharing
 
 ## Installation 
 
