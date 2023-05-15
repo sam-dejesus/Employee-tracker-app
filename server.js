@@ -1,9 +1,10 @@
+// list of imports and port the server will run on
 const inquirer = require("inquirer");
 const PORT = process.env.PORT || 3001;
 const mysql = require('mysql2');
 require('dotenv').config();
 
-
+// connects mysql to the server
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -20,6 +21,7 @@ start();
 
 });
 
+// main menu 
 function start() {
     inquirer
         .prompt({
@@ -42,6 +44,7 @@ function start() {
                 "Exit",
             ],
         })
+        // handles the users input
         .then((answer) => {
             switch (answer.action) {
                 case "View all departments":
@@ -109,6 +112,7 @@ function viewAllRoles() {
     });
 }
 
+// shows all employee from the database
 function viewAllEmployees() {
     const query = `
     SELECT e.id, e.firstName, e.lastName, r.title, d.departmentName, r.salary, CONCAT(m.firstName, ' ', m.lastName) AS managerName
@@ -125,7 +129,7 @@ function viewAllEmployees() {
     });
 }
 
-
+//adds a department to the database
 function addDepartment() {
     inquirer
         .prompt({
@@ -146,7 +150,7 @@ function addDepartment() {
         });
 }
 
-
+// adds role to the database
 function addRole() {
     const query = "SELECT * FROM departments";
     connection.query(query, (err, res) => {
@@ -281,7 +285,7 @@ function addEmployee() {
     });
 }
 
-
+// adds new manager to the database
 function addManager() {
     const queryDepartments = "SELECT * FROM departments";
     const queryEmployees = "SELECT * FROM employee";
@@ -353,7 +357,7 @@ function addManager() {
     });
 }
 
-
+// updates employee's role
 function updateEmployeeRole() {
     const queryEmployees =
         "SELECT employee.id, employee.firstName, employee.lastName, roles.title FROM employee LEFT JOIN roles ON employee.roleId = roles.id";
@@ -408,6 +412,7 @@ function updateEmployeeRole() {
     });
 }
 
+// view employee's by managers 
 function viewEmployeesByManager() {
     const query = `
       SELECT 
@@ -471,15 +476,17 @@ function viewEmployeesByDepartment() {
         start();
     });
 }
-
+//delete department, roles, or employee
 function deleteDepartmentsRolesEmployees() {
     inquirer
+        // menu for deleting 
         .prompt({
             type: "list",
             name: "data",
             message: "What would you like to delete?",
             choices: ["Employee", "Role", "Department"],
         })
+        // handles user input
         .then((answer) => {
             switch (answer.data) {
                 case "Employee":
@@ -498,7 +505,7 @@ function deleteDepartmentsRolesEmployees() {
             }
         });
 }
-
+// function that deletes employee
 function deleteEmployee() {
     const query = "SELECT * FROM employee";
     connection.query(query, (err, res) => {
@@ -535,7 +542,7 @@ function deleteEmployee() {
     });
 }
 
-
+// function that deletes roles
 function deleteRole() {
   
     const query = "SELECT * FROM roles";
@@ -574,6 +581,7 @@ function deleteRole() {
     });
 }
 
+// function that deletes departments
 function deleteDepartment() {
  
     const query = "SELECT * FROM departments";
@@ -619,7 +627,7 @@ function deleteDepartment() {
 }
 
 
-
+// allows the user to see the budget of departments
 function viewTotalUtilizedBudgetOfDepartment() {
     const query = "SELECT * FROM departments";
     connection.query(query, (err, res) => {
@@ -669,8 +677,3 @@ function viewTotalUtilizedBudgetOfDepartment() {
 process.on("exit", () => {
     connection.end();
 });
-
-
-
-
-
